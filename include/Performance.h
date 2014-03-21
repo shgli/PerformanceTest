@@ -4,22 +4,22 @@
 #include <string>
 #include <cstdint>
 #include <boost/timer/timer.hpp>
+#include <odb/core.hxx>
 
+#pragma db object
 class Performance
 {
 public:
-    const std::string& getAlgorithmName() const { return mAlgorithmName; }
-    void setAlgorithmName(const std::string& algorithmName) { mAlgorithmName = algorithmName; }
-    const std::string& getImplementationName() const { return mImplementationName; }
-    void setImplementationName(const std::string& implementationName) { mImplementationName = implementationName;}
+    Performance();
 
-private:
-    std::string mAlgorithmName;
-    std::string mImplementationName;
-    bool mIsDebug;
-    uint64_t mTotalTime;
-    uint64_t mUserTime;
-    uint64_t m
+    std::string Algorithm;
+    std::string Implementation;
 
+    boost::date_time::ptime ComputeStartTime;
+    uint64_t TotalTime;
+    uint64_t UserTime;
+    uint64_t SystemTime;
+    uint_t PercentTime;
+    bool IsDebug;
 };
 #endif
