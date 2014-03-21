@@ -1,0 +1,22 @@
+INCLUDE(CollectSrcs)
+PROJECT(PerformanceTest)
+INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR})
+INCLUDE_DIRECTORIES($ENV{BOOST_INCLUDE})
+LINK_DIRECTORIES($ENV{BOOST_LIB})
+SET(PerformanceTest_SUBDIRS )
+
+GET_SRCS(PerformanceTest_SRCLISTS PerformanceTest_SUBDIRS)
+ADD_EXECUTABLE(PerformanceTest ${PerformanceTest_SRCLISTS})
+
+TARGET_LINK_LIBRARIES(PerformanceTest boost_filesystem)
+TARGET_LINK_LIBRARIES(PerformanceTest boost_system)
+
+INSTALL(TARGETS PerformanceTest 
+    LIBRARY DESTINATION lib
+    ARCHIVE DESTINATION lib)
+
+INSTALL(DIRECTORY ${CMAKE_SOURCE_DIR}/PerformanceTest/
+    DESTINATION include/PerformanceTest
+    FILES_MATCHING PATTERN "*.h")
+
+
