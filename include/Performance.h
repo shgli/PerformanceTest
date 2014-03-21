@@ -5,8 +5,9 @@
 #include <cstdint>
 #include <boost/timer/timer.hpp>
 #include <odb/core.hxx>
+#include <boost/date_time/posix_time/posix_time.hpp>
 
-#pragma db object
+#pragma db object no_id
 class Performance
 {
 public:
@@ -15,11 +16,13 @@ public:
     std::string Algorithm;
     std::string Implementation;
 
-    boost::date_time::ptime ComputeStartTime;
+#pragma db type("TIMESTAMP") not_null
+    boost::posix_time::ptime ComputeStartTime;
     uint64_t TotalTime;
     uint64_t UserTime;
     uint64_t SystemTime;
-    uint_t PercentTime;
+    uint32_t PercentTime;
     bool IsDebug;
 };
 #endif
+

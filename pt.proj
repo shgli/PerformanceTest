@@ -1,0 +1,21 @@
+
+pt=/home/shgli/src/PerformanceTest CD=build filter="*.h *.cpp *.txt" {
+ CMakeLists.txt
+ cmake=cmake {
+ }
+ include=include {
+  DBFixture.h
+  Performance.h
+  TimeFixture.h
+ }
+ src=src {
+  Mandelbrot.cpp
+  TestMain.cpp
+  CMakeLists.txt
+  common=common{
+   DBFixture.cpp
+   Performance.cpp
+   TimeFixture.cpp
+  }
+ }
+}
