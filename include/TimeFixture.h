@@ -1,7 +1,8 @@
 #ifndef _TIMEFIXTURE_H
 #define _TIMEFIXTURE_H
-#include <boost/timer/timer.hpp>
+#include <string>
 class Performance;
+class Timer;
 class TimeFixture
 {
 public:
@@ -12,7 +13,7 @@ public:
     void SetImplementation(const std::string& impl);
 
 private:
-    boost::timer::cpu_timer mTimer;
+    Timer* mTimer;
     Performance* mPerformance;
 };
 #endif

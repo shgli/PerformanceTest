@@ -16,6 +16,7 @@ pt=/home/shgli/src/PerformanceTest CD=build filter="*.h *.cpp *.txt" {
    DBFixture.cpp
    Performance.cpp
    TimeFixture.cpp
+   CMakeLists.txt
   }
  }
 }
