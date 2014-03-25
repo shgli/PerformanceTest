@@ -49,7 +49,8 @@ namespace odb
   };
 
   bool access::object_traits_impl< ::Performance, id_pgsql >::
-  grow (image_type& i, bool* t)
+  grow (image_type& i,
+        bool* t)
   {
     ODB_POTENTIALLY_UNUSED (i);
     ODB_POTENTIALLY_UNUSED (t);
@@ -172,7 +173,9 @@ namespace odb
   }
 
   bool access::object_traits_impl< ::Performance, id_pgsql >::
-  init (image_type& i, const object_type& o, pgsql::statement_kind sk)
+  init (image_type& i,
+        const object_type& o,
+        pgsql::statement_kind sk)
   {
     ODB_POTENTIALLY_UNUSED (i);
     ODB_POTENTIALLY_UNUSED (o);
@@ -312,7 +315,9 @@ namespace odb
   }
 
   void access::object_traits_impl< ::Performance, id_pgsql >::
-  init (object_type& o, const image_type& i, database* db)
+  init (object_type& o,
+        const image_type& i,
+        database* db)
   {
     ODB_POTENTIALLY_UNUSED (o);
     ODB_POTENTIALLY_UNUSED (i);
@@ -434,33 +439,32 @@ namespace odb
   }
 
   const char access::object_traits_impl< ::Performance, id_pgsql >::persist_statement[] =
-  "INSERT INTO \"Performance\" ("
-  "\"Algorithm\","
-  "\"Implementation\","
-  "\"ComputeStartTime\","
-  "\"TotalTime\","
-  "\"UserTime\","
-  "\"SystemTime\","
-  "\"PercentTime\","
-  "\"IsDebug\")"
-  " VALUES ($1,$2,$3,$4,$5,$6,$7,$8)";
+  "INSERT INTO \"Performance\" "
+  "(\"Algorithm\", "
+  "\"Implementation\", "
+  "\"ComputeStartTime\", "
+  "\"TotalTime\", "
+  "\"UserTime\", "
+  "\"SystemTime\", "
+  "\"PercentTime\", "
+  "\"IsDebug\") "
+  "VALUES "
+  "($1, $2, $3, $4, $5, $6, $7, $8)";
 
   const char access::object_traits_impl< ::Performance, id_pgsql >::query_statement[] =
   "SELECT "
-  "\"Performance\".\"Algorithm\","
-  "\"Performance\".\"Implementation\","
-  "\"Performance\".\"ComputeStartTime\","
-  "\"Performance\".\"TotalTime\","
-  "\"Performance\".\"UserTime\","
-  "\"Performance\".\"SystemTime\","
-  "\"Performance\".\"PercentTime\","
-  "\"Performance\".\"IsDebug\""
-  " FROM \"Performance\""
-  " ";
+  "\"Performance\".\"Algorithm\", "
+  "\"Performance\".\"Implementation\", "
+  "\"Performance\".\"ComputeStartTime\", "
+  "\"Performance\".\"TotalTime\", "
+  "\"Performance\".\"UserTime\", "
+  "\"Performance\".\"SystemTime\", "
+  "\"Performance\".\"PercentTime\", "
+  "\"Performance\".\"IsDebug\" "
+  "FROM \"Performance\"";
 
   const char access::object_traits_impl< ::Performance, id_pgsql >::erase_query_statement[] =
-  "DELETE FROM \"Performance\""
-  " ";
+  "DELETE FROM \"Performance\"";
 
   const char access::object_traits_impl< ::Performance, id_pgsql >::table_name[] =
   "\"Performance\"";
@@ -529,12 +533,21 @@ namespace odb
       imb.version++;
     }
 
+    std::string text (query_statement);
+    if (!q.empty ())
+    {
+      text += " ";
+      text += q.clause ();
+    }
+
     q.init_parameters ();
     shared_ptr<select_statement> st (
       new (shared) select_statement (
         sts.connection (),
         query_statement_name,
-        query_statement + q.clause (),
+        text,
+        false,
+        true,
         q.parameter_types (),
         q.parameter_count (),
         q.parameters_binding (),
@@ -545,7 +558,7 @@ namespace odb
 
     shared_ptr< odb::no_id_object_result_impl<object_type> > r (
       new (shared) pgsql::no_id_object_result_impl<object_type> (
-        q, st, sts));
+        q, st, sts, 0));
 
     return result<object_type> (r);
   }
@@ -558,11 +571,18 @@ namespace odb
     pgsql::connection& conn (
       pgsql::transaction::current ().connection ());
 
+    std::string text (erase_query_statement);
+    if (!q.empty ())
+    {
+      text += ' ';
+      text += q.clause ();
+    }
+
     q.init_parameters ();
     delete_statement st (
       conn,
       erase_query_statement_name,
-      erase_query_statement + q.clause (),
+      text,
       q.parameter_types (),
       q.parameter_count (),
       q.parameters_binding ());

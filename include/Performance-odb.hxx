@@ -7,7 +7,7 @@
 
 #include <odb/version.hxx>
 
-#if (ODB_VERSION != 20200UL)
+#if (ODB_VERSION != 20300UL)
 #error ODB runtime version mismatch
 #endif
 
@@ -16,9 +16,10 @@
 // Begin prologue.
 //
 #include <odb/boost/version.hxx>
-#if ODB_BOOST_VERSION != 2020000 // 2.2.0
+#if ODB_BOOST_VERSION != 2030000 // 2.3.0
 #  error ODB and C++ compilers see different libodb-boost interface versions
 #endif
+#include <odb/boost/date-time/pgsql/gregorian-traits.hxx>
 #include <odb/boost/date-time/pgsql/posix-time-traits.hxx>
 //
 // End prologue.
@@ -299,7 +300,8 @@ namespace odb
     using object_traits<object_type>::id;
 
     static bool
-    grow (image_type&, bool*);
+    grow (image_type&,
+          bool*);
 
     static void
     bind (pgsql::bind*,
@@ -307,10 +309,14 @@ namespace odb
           pgsql::statement_kind);
 
     static bool
-    init (image_type&, const object_type&, pgsql::statement_kind);
+    init (image_type&,
+          const object_type&,
+          pgsql::statement_kind);
 
     static void
-    init (object_type&, const image_type&, database*);
+    init (object_type&,
+          const image_type&,
+          database*);
 
     typedef pgsql::no_id_object_statements<object_type> statements_type;
 
@@ -321,6 +327,11 @@ namespace odb
     static const std::size_t inverse_column_count = 0UL;
     static const std::size_t readonly_column_count = 0UL;
     static const std::size_t managed_optimistic_column_count = 0UL;
+
+    static const std::size_t separate_load_column_count = 0UL;
+    static const std::size_t separate_update_column_count = 0UL;
+
+    static const bool versioned = false;
 
     static const char persist_statement[];
     static const char query_statement[];
