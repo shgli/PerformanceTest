@@ -14,6 +14,7 @@ TARGET_LINK_LIBRARIES(PerformanceTest boost_filesystem)
 TARGET_LINK_LIBRARIES(PerformanceTest boost_system)
 TARGET_LINK_LIBRARIES(PerformanceTest boost_unit_test_framework)
 TARGET_LINK_LIBRARIES(PerformanceTest boost_timer)
+TARGET_LINK_LIBRARIES(PerformanceTest boost_timer tbb)
 TARGET_LINK_LIBRARIES(PerformanceTest odb odb-pgsql odb-boost)
 
 INSTALL(TARGETS PerformanceTest 

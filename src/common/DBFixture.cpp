@@ -40,7 +40,7 @@ DBFixture::~DBFixture()
 		    iArgv++;
 		    iPos++;
 		}
-		argv[iArgv] = 0;
+		argv[argc][iArgv] = '\0';
 
 		argc++;
 	    }
@@ -62,6 +62,8 @@ DBFixture::~DBFixture()
 
 Performance* DBFixtureImpl::NewPerformance( void )
 {
-    return mPerformancePool.construct();
+    auto pPerformance = mPerformancePool.construct();
+    mPerformances.push_back(pPerformance);
+    return pPerformance;
 }
 

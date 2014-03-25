@@ -2,6 +2,7 @@
 #include "DBFixture.h"
 #include "Performance.h"
 #include <boost/timer/timer.hpp>
+#include <boost/date_time/posix_time/posix_time.hpp>
 class Timer
 {
 public:
@@ -13,6 +14,7 @@ TimeFixture::TimeFixture()
 {
     mTimer = new Timer();
     mPerformance = DBFixtureImpl::Instance().NewPerformance();
+    mPerformance->ComputeStartTime = boost::posix_time::microsec_clock::local_time();
     (*mTimer)->start();
 }
 

@@ -1,7 +1,7 @@
 #include "Performance.h"
 Performance::Performance()
 {
-#ifdef _DEBUG
+#ifdef DEBUG
     IsDebug = true;
 #else
     IsDebug = false;
