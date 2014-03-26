@@ -4,11 +4,15 @@
 #include <boost/pool/object_pool.hpp>
 #include <boost/noncopyable.hpp>
 #include "Performance.h"
+#include <tbb/task_scheduler_init.h>
 class DBFixture
 {
 public:
     DBFixture();
     ~DBFixture();
+ 
+private:
+    tbb::task_scheduler_init mTaskInitializer;
 };
 
 class DBFixtureImpl

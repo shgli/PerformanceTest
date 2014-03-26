@@ -69,6 +69,7 @@ BOOST_FIXTURE_TEST_SUITE(Mandelbrot,TimeFixture)
 	Output(result);
 
     }
+
    BOOST_AUTO_TEST_CASE(tbbTest)
    {
        SetAlgorithm("Mandelbrot");
@@ -81,6 +82,27 @@ BOOST_FIXTURE_TEST_SUITE(Mandelbrot,TimeFixture)
 	    for(int iCol = 0; iCol < MAX_COL; ++iCol)
 	    {
 		result[iRow][iCol] = Mandel(std::complex<double>(Scale(iRow),Scale(iCol)),DEPTH);
+	    }
+	});
+
+	Output(result);
+   }
+
+   BOOST_AUTO_TEST_CASE(tbb_rangeTest)
+   {
+       SetAlgorithm("Mandelbrot");
+       SetImplementation("range_base_tbb");
+
+	int result[MAX_ROW][MAX_COL];
+	tbb::parallel_for(tbb::blocked_range<int>(0,MAX_ROW)
+		,[=,&result](tbb::blocked_range<int> row)
+	{
+	    for(int iRow = row.begin(); iRow < row.end(); ++iRow)
+	    {
+		for(int iCol = 0; iCol < MAX_COL; ++iCol)
+		{
+		    result[iRow][iCol] = Mandel(std::complex<double>(Scale(iRow),Scale(iCol)),DEPTH);
+		}
 	    }
 	});
 
