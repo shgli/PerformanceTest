@@ -1,8 +1,6 @@
 #include "TimeFixture.h"
 #define private public
-#ifndef _WIN32
-#define BOOST_TEST_DYN_LINK
-#endif
+#include <iostream>
 #include <boost/test/unit_test.hpp>
 #include <complex>
 #include <tbb/parallel_for.h>

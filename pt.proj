@@ -10,6 +10,7 @@ pt=/home/shgli/src/PerformanceTest CD=build filter="*.h *.cpp *.txt" {
  }
  src=src {
   Mandelbrot.cpp
+  FloatAdd.cpp
   TestMain.cpp
   CMakeLists.txt
   common=common{

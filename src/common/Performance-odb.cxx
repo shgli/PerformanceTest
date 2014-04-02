@@ -19,7 +19,6 @@
 #include <odb/pgsql/no-id-object-statements.hxx>
 #include <odb/pgsql/container-statements.hxx>
 #include <odb/pgsql/exceptions.hxx>
-#include <odb/pgsql/no-id-object-result.hxx>
 
 namespace odb
 {
@@ -28,12 +27,6 @@ namespace odb
 
   const char access::object_traits_impl< ::Performance, id_pgsql >::
   persist_statement_name[] = "Performance_persist";
-
-  const char access::object_traits_impl< ::Performance, id_pgsql >::
-  query_statement_name[] = "Performance_query";
-
-  const char access::object_traits_impl< ::Performance, id_pgsql >::
-  erase_query_statement_name[] = "Performance_erase_query";
 
   const unsigned int access::object_traits_impl< ::Performance, id_pgsql >::
   persist_statement_types[] =
@@ -45,6 +38,12 @@ namespace odb
     pgsql::int8_oid,
     pgsql::int8_oid,
     pgsql::int4_oid,
+    pgsql::int4_oid,
+    pgsql::int4_oid,
+    pgsql::int4_oid,
+    pgsql::int4_oid,
+    pgsql::int4_oid,
+    pgsql::text_oid,
     pgsql::bool_oid
   };
 
@@ -93,9 +92,37 @@ namespace odb
     //
     t[6UL] = 0;
 
-    // IsDebug
+    // NumOfCpu
     //
     t[7UL] = 0;
+
+    // CacheSize
+    //
+    t[8UL] = 0;
+
+    // HardwareConcurrency
+    //
+    t[9UL] = 0;
+
+    // TotalMemory
+    //
+    t[10UL] = 0;
+
+    // AvaiableMemory
+    //
+    t[11UL] = 0;
+
+    // CPUName
+    //
+    if (t[12UL])
+    {
+      i.CPUName_value.capacity (i.CPUName_size);
+      grew = true;
+    }
+
+    // IsDebug
+    //
+    t[13UL] = 0;
 
     return grew;
   }
@@ -162,6 +189,50 @@ namespace odb
     b[n].type = pgsql::bind::integer;
     b[n].buffer = &i.PercentTime_value;
     b[n].is_null = &i.PercentTime_null;
+    n++;
+
+    // NumOfCpu
+    //
+    b[n].type = pgsql::bind::integer;
+    b[n].buffer = &i.NumOfCpu_value;
+    b[n].is_null = &i.NumOfCpu_null;
+    n++;
+
+    // CacheSize
+    //
+    b[n].type = pgsql::bind::integer;
+    b[n].buffer = &i.CacheSize_value;
+    b[n].is_null = &i.CacheSize_null;
+    n++;
+
+    // HardwareConcurrency
+    //
+    b[n].type = pgsql::bind::integer;
+    b[n].buffer = &i.HardwareConcurrency_value;
+    b[n].is_null = &i.HardwareConcurrency_null;
+    n++;
+
+    // TotalMemory
+    //
+    b[n].type = pgsql::bind::integer;
+    b[n].buffer = &i.TotalMemory_value;
+    b[n].is_null = &i.TotalMemory_null;
+    n++;
+
+    // AvaiableMemory
+    //
+    b[n].type = pgsql::bind::integer;
+    b[n].buffer = &i.AvaiableMemory_value;
+    b[n].is_null = &i.AvaiableMemory_null;
+    n++;
+
+    // CPUName
+    //
+    b[n].type = pgsql::bind::text;
+    b[n].buffer = i.CPUName_value.data ();
+    b[n].capacity = i.CPUName_value.capacity ();
+    b[n].size = &i.CPUName_size;
+    b[n].is_null = &i.CPUName_null;
     n++;
 
     // IsDebug
@@ -297,6 +368,97 @@ namespace odb
       i.PercentTime_null = is_null;
     }
 
+    // NumOfCpu
+    //
+    {
+      ::uint32_t const& v =
+        o.NumOfCpu;
+
+      bool is_null (false);
+      pgsql::value_traits<
+          ::uint32_t,
+          pgsql::id_integer >::set_image (
+        i.NumOfCpu_value, is_null, v);
+      i.NumOfCpu_null = is_null;
+    }
+
+    // CacheSize
+    //
+    {
+      ::uint32_t const& v =
+        o.CacheSize;
+
+      bool is_null (false);
+      pgsql::value_traits<
+          ::uint32_t,
+          pgsql::id_integer >::set_image (
+        i.CacheSize_value, is_null, v);
+      i.CacheSize_null = is_null;
+    }
+
+    // HardwareConcurrency
+    //
+    {
+      ::uint32_t const& v =
+        o.HardwareConcurrency;
+
+      bool is_null (false);
+      pgsql::value_traits<
+          ::uint32_t,
+          pgsql::id_integer >::set_image (
+        i.HardwareConcurrency_value, is_null, v);
+      i.HardwareConcurrency_null = is_null;
+    }
+
+    // TotalMemory
+    //
+    {
+      ::uint32_t const& v =
+        o.TotalMemory;
+
+      bool is_null (false);
+      pgsql::value_traits<
+          ::uint32_t,
+          pgsql::id_integer >::set_image (
+        i.TotalMemory_value, is_null, v);
+      i.TotalMemory_null = is_null;
+    }
+
+    // AvaiableMemory
+    //
+    {
+      ::uint32_t const& v =
+        o.AvaiableMemory;
+
+      bool is_null (false);
+      pgsql::value_traits<
+          ::uint32_t,
+          pgsql::id_integer >::set_image (
+        i.AvaiableMemory_value, is_null, v);
+      i.AvaiableMemory_null = is_null;
+    }
+
+    // CPUName
+    //
+    {
+      ::std::string const& v =
+        o.CPUName;
+
+      bool is_null (false);
+      std::size_t size (0);
+      std::size_t cap (i.CPUName_value.capacity ());
+      pgsql::value_traits<
+          ::std::string,
+          pgsql::id_string >::set_image (
+        i.CPUName_value,
+        size,
+        is_null,
+        v);
+      i.CPUName_null = is_null;
+      i.CPUName_size = size;
+      grew = grew || (cap != i.CPUName_value.capacity ());
+    }
+
     // IsDebug
     //
     {
@@ -423,6 +585,91 @@ namespace odb
         i.PercentTime_null);
     }
 
+    // NumOfCpu
+    //
+    {
+      ::uint32_t& v =
+        o.NumOfCpu;
+
+      pgsql::value_traits<
+          ::uint32_t,
+          pgsql::id_integer >::set_value (
+        v,
+        i.NumOfCpu_value,
+        i.NumOfCpu_null);
+    }
+
+    // CacheSize
+    //
+    {
+      ::uint32_t& v =
+        o.CacheSize;
+
+      pgsql::value_traits<
+          ::uint32_t,
+          pgsql::id_integer >::set_value (
+        v,
+        i.CacheSize_value,
+        i.CacheSize_null);
+    }
+
+    // HardwareConcurrency
+    //
+    {
+      ::uint32_t& v =
+        o.HardwareConcurrency;
+
+      pgsql::value_traits<
+          ::uint32_t,
+          pgsql::id_integer >::set_value (
+        v,
+        i.HardwareConcurrency_value,
+        i.HardwareConcurrency_null);
+    }
+
+    // TotalMemory
+    //
+    {
+      ::uint32_t& v =
+        o.TotalMemory;
+
+      pgsql::value_traits<
+          ::uint32_t,
+          pgsql::id_integer >::set_value (
+        v,
+        i.TotalMemory_value,
+        i.TotalMemory_null);
+    }
+
+    // AvaiableMemory
+    //
+    {
+      ::uint32_t& v =
+        o.AvaiableMemory;
+
+      pgsql::value_traits<
+          ::uint32_t,
+          pgsql::id_integer >::set_value (
+        v,
+        i.AvaiableMemory_value,
+        i.AvaiableMemory_null);
+    }
+
+    // CPUName
+    //
+    {
+      ::std::string& v =
+        o.CPUName;
+
+      pgsql::value_traits<
+          ::std::string,
+          pgsql::id_string >::set_value (
+        v,
+        i.CPUName_value,
+        i.CPUName_size,
+        i.CPUName_null);
+    }
+
     // IsDebug
     //
     {
@@ -447,27 +694,15 @@ namespace odb
   "\"UserTime\", "
   "\"SystemTime\", "
   "\"PercentTime\", "
+  "\"NumOfCpu\", "
+  "\"CacheSize\", "
+  "\"HardwareConcurrency\", "
+  "\"TotalMemory\", "
+  "\"AvaiableMemory\", "
+  "\"CPUName\", "
   "\"IsDebug\") "
   "VALUES "
-  "($1, $2, $3, $4, $5, $6, $7, $8)";
-
-  const char access::object_traits_impl< ::Performance, id_pgsql >::query_statement[] =
-  "SELECT "
-  "\"Performance\".\"Algorithm\", "
-  "\"Performance\".\"Implementation\", "
-  "\"Performance\".\"ComputeStartTime\", "
-  "\"Performance\".\"TotalTime\", "
-  "\"Performance\".\"UserTime\", "
-  "\"Performance\".\"SystemTime\", "
-  "\"Performance\".\"PercentTime\", "
-  "\"Performance\".\"IsDebug\" "
-  "FROM \"Performance\"";
-
-  const char access::object_traits_impl< ::Performance, id_pgsql >::erase_query_statement[] =
-  "DELETE FROM \"Performance\"";
-
-  const char access::object_traits_impl< ::Performance, id_pgsql >::table_name[] =
-  "\"Performance\"";
+  "($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)";
 
   void access::object_traits_impl< ::Performance, id_pgsql >::
   persist (database& db, const object_type& obj)
@@ -506,88 +741,6 @@ namespace odb
     callback (db,
               obj,
               callback_event::post_persist);
-  }
-
-  result< access::object_traits_impl< ::Performance, id_pgsql >::object_type >
-  access::object_traits_impl< ::Performance, id_pgsql >::
-  query (database&, const query_base_type& q)
-  {
-    using namespace pgsql;
-    using odb::details::shared;
-    using odb::details::shared_ptr;
-
-    pgsql::connection& conn (
-      pgsql::transaction::current ().connection ());
-
-    statements_type& sts (
-      conn.statement_cache ().find_object<object_type> ());
-
-    image_type& im (sts.image ());
-    binding& imb (sts.select_image_binding ());
-
-    if (im.version != sts.select_image_version () ||
-        imb.version == 0)
-    {
-      bind (imb.bind, im, statement_select);
-      sts.select_image_version (im.version);
-      imb.version++;
-    }
-
-    std::string text (query_statement);
-    if (!q.empty ())
-    {
-      text += " ";
-      text += q.clause ();
-    }
-
-    q.init_parameters ();
-    shared_ptr<select_statement> st (
-      new (shared) select_statement (
-        sts.connection (),
-        query_statement_name,
-        text,
-        false,
-        true,
-        q.parameter_types (),
-        q.parameter_count (),
-        q.parameters_binding (),
-        imb));
-
-    st->execute ();
-    st->deallocate ();
-
-    shared_ptr< odb::no_id_object_result_impl<object_type> > r (
-      new (shared) pgsql::no_id_object_result_impl<object_type> (
-        q, st, sts, 0));
-
-    return result<object_type> (r);
-  }
-
-  unsigned long long access::object_traits_impl< ::Performance, id_pgsql >::
-  erase_query (database&, const query_base_type& q)
-  {
-    using namespace pgsql;
-
-    pgsql::connection& conn (
-      pgsql::transaction::current ().connection ());
-
-    std::string text (erase_query_statement);
-    if (!q.empty ())
-    {
-      text += ' ';
-      text += q.clause ();
-    }
-
-    q.init_parameters ();
-    delete_statement st (
-      conn,
-      erase_query_statement_name,
-      text,
-      q.parameter_types (),
-      q.parameter_count (),
-      q.parameters_binding ());
-
-    return st.execute ();
   }
 }
 

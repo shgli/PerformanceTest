@@ -22,6 +22,12 @@ public:
     uint64_t UserTime;
     uint64_t SystemTime;
     uint32_t PercentTime;
+    uint32_t NumOfCpu;
+    uint32_t CacheSize;
+    uint32_t HardwareConcurrency;
+    uint32_t TotalMemory;
+    uint32_t AvaiableMemory;
+    std::string CPUName;
     bool IsDebug;
 };
 #endif

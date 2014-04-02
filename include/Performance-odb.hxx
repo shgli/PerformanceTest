@@ -19,7 +19,6 @@
 #if ODB_BOOST_VERSION != 2030000 // 2.3.0
 #  error ODB and C++ compilers see different libodb-boost interface versions
 #endif
-#include <odb/boost/date-time/pgsql/gregorian-traits.hxx>
 #include <odb/boost/date-time/pgsql/posix-time-traits.hxx>
 //
 // End prologue.
@@ -36,11 +35,8 @@
 #include <odb/pointer-traits.hxx>
 #include <odb/container-traits.hxx>
 #include <odb/no-op-cache-traits.hxx>
-#include <odb/result.hxx>
-#include <odb/no-id-object-result.hxx>
 
 #include <odb/details/unused.hxx>
-#include <odb/details/shared-ptr.hxx>
 
 namespace odb
 {
@@ -93,158 +89,11 @@ namespace odb
 #include <odb/pgsql/forward.hxx>
 #include <odb/pgsql/binding.hxx>
 #include <odb/pgsql/pgsql-types.hxx>
-#include <odb/pgsql/query.hxx>
 
 namespace odb
 {
   // Performance
   //
-  template <typename A>
-  struct query_columns< ::Performance, id_pgsql, A >
-  {
-    // Algorithm
-    //
-    typedef
-    pgsql::query_column<
-      pgsql::value_traits<
-        ::std::string,
-        pgsql::id_string >::query_type,
-      pgsql::id_string >
-    Algorithm_type_;
-
-    static const Algorithm_type_ Algorithm;
-
-    // Implementation
-    //
-    typedef
-    pgsql::query_column<
-      pgsql::value_traits<
-        ::std::string,
-        pgsql::id_string >::query_type,
-      pgsql::id_string >
-    Implementation_type_;
-
-    static const Implementation_type_ Implementation;
-
-    // ComputeStartTime
-    //
-    typedef
-    pgsql::query_column<
-      pgsql::value_traits<
-        ::boost::posix_time::ptime,
-        pgsql::id_timestamp >::query_type,
-      pgsql::id_timestamp >
-    ComputeStartTime_type_;
-
-    static const ComputeStartTime_type_ ComputeStartTime;
-
-    // TotalTime
-    //
-    typedef
-    pgsql::query_column<
-      pgsql::value_traits<
-        ::uint64_t,
-        pgsql::id_bigint >::query_type,
-      pgsql::id_bigint >
-    TotalTime_type_;
-
-    static const TotalTime_type_ TotalTime;
-
-    // UserTime
-    //
-    typedef
-    pgsql::query_column<
-      pgsql::value_traits<
-        ::uint64_t,
-        pgsql::id_bigint >::query_type,
-      pgsql::id_bigint >
-    UserTime_type_;
-
-    static const UserTime_type_ UserTime;
-
-    // SystemTime
-    //
-    typedef
-    pgsql::query_column<
-      pgsql::value_traits<
-        ::uint64_t,
-        pgsql::id_bigint >::query_type,
-      pgsql::id_bigint >
-    SystemTime_type_;
-
-    static const SystemTime_type_ SystemTime;
-
-    // PercentTime
-    //
-    typedef
-    pgsql::query_column<
-      pgsql::value_traits<
-        ::uint32_t,
-        pgsql::id_integer >::query_type,
-      pgsql::id_integer >
-    PercentTime_type_;
-
-    static const PercentTime_type_ PercentTime;
-
-    // IsDebug
-    //
-    typedef
-    pgsql::query_column<
-      pgsql::value_traits<
-        bool,
-        pgsql::id_boolean >::query_type,
-      pgsql::id_boolean >
-    IsDebug_type_;
-
-    static const IsDebug_type_ IsDebug;
-  };
-
-  template <typename A>
-  const typename query_columns< ::Performance, id_pgsql, A >::Algorithm_type_
-  query_columns< ::Performance, id_pgsql, A >::
-  Algorithm (A::table_name, "\"Algorithm\"", 0);
-
-  template <typename A>
-  const typename query_columns< ::Performance, id_pgsql, A >::Implementation_type_
-  query_columns< ::Performance, id_pgsql, A >::
-  Implementation (A::table_name, "\"Implementation\"", 0);
-
-  template <typename A>
-  const typename query_columns< ::Performance, id_pgsql, A >::ComputeStartTime_type_
-  query_columns< ::Performance, id_pgsql, A >::
-  ComputeStartTime (A::table_name, "\"ComputeStartTime\"", 0);
-
-  template <typename A>
-  const typename query_columns< ::Performance, id_pgsql, A >::TotalTime_type_
-  query_columns< ::Performance, id_pgsql, A >::
-  TotalTime (A::table_name, "\"TotalTime\"", 0);
-
-  template <typename A>
-  const typename query_columns< ::Performance, id_pgsql, A >::UserTime_type_
-  query_columns< ::Performance, id_pgsql, A >::
-  UserTime (A::table_name, "\"UserTime\"", 0);
-
-  template <typename A>
-  const typename query_columns< ::Performance, id_pgsql, A >::SystemTime_type_
-  query_columns< ::Performance, id_pgsql, A >::
-  SystemTime (A::table_name, "\"SystemTime\"", 0);
-
-  template <typename A>
-  const typename query_columns< ::Performance, id_pgsql, A >::PercentTime_type_
-  query_columns< ::Performance, id_pgsql, A >::
-  PercentTime (A::table_name, "\"PercentTime\"", 0);
-
-  template <typename A>
-  const typename query_columns< ::Performance, id_pgsql, A >::IsDebug_type_
-  query_columns< ::Performance, id_pgsql, A >::
-  IsDebug (A::table_name, "\"IsDebug\"", 0);
-
-  template <typename A>
-  struct pointer_query_columns< ::Performance, id_pgsql, A >:
-    query_columns< ::Performance, id_pgsql, A >
-  {
-  };
-
   template <>
   class access::object_traits_impl< ::Performance, id_pgsql >:
     public access::object_traits< ::Performance >
@@ -289,6 +138,37 @@ namespace odb
       int PercentTime_value;
       bool PercentTime_null;
 
+      // NumOfCpu
+      //
+      int NumOfCpu_value;
+      bool NumOfCpu_null;
+
+      // CacheSize
+      //
+      int CacheSize_value;
+      bool CacheSize_null;
+
+      // HardwareConcurrency
+      //
+      int HardwareConcurrency_value;
+      bool HardwareConcurrency_null;
+
+      // TotalMemory
+      //
+      int TotalMemory_value;
+      bool TotalMemory_null;
+
+      // AvaiableMemory
+      //
+      int AvaiableMemory_value;
+      bool AvaiableMemory_null;
+
+      // CPUName
+      //
+      details::buffer CPUName_value;
+      std::size_t CPUName_size;
+      bool CPUName_null;
+
       // IsDebug
       //
       bool IsDebug_value;
@@ -320,9 +200,7 @@ namespace odb
 
     typedef pgsql::no_id_object_statements<object_type> statements_type;
 
-    typedef pgsql::query_base query_base_type;
-
-    static const std::size_t column_count = 8UL;
+    static const std::size_t column_count = 14UL;
     static const std::size_t id_column_count = 0UL;
     static const std::size_t inverse_column_count = 0UL;
     static const std::size_t readonly_column_count = 0UL;
@@ -334,23 +212,11 @@ namespace odb
     static const bool versioned = false;
 
     static const char persist_statement[];
-    static const char query_statement[];
-    static const char erase_query_statement[];
-
-    static const char table_name[];
 
     static void
     persist (database&, const object_type&);
 
-    static result<object_type>
-    query (database&, const query_base_type&);
-
-    static unsigned long long
-    erase_query (database&, const query_base_type&);
-
     static const char persist_statement_name[];
-    static const char query_statement_name[];
-    static const char erase_query_statement_name[];
 
     static const unsigned int persist_statement_types[];
 
@@ -362,9 +228,6 @@ namespace odb
     public access::object_traits_impl< ::Performance, id_pgsql >
   {
   };
-
-  // Performance
-  //
 }
 
 #include "Performance-odb.ixx"

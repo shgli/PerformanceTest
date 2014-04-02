@@ -12,5 +12,11 @@ CREATE TABLE "Performance" (
   "UserTime" BIGINT NOT NULL,
   "SystemTime" BIGINT NOT NULL,
   "PercentTime" INTEGER NOT NULL,
+  "NumOfCpu" INTEGER NOT NULL,
+  "CacheSize" INTEGER NOT NULL,
+  "HardwareConcurrency" INTEGER NOT NULL,
+  "TotalMemory" INTEGER NOT NULL,
+  "AvaiableMemory" INTEGER NOT NULL,
+  "CPUName" TEXT NOT NULL,
   "IsDebug" BOOLEAN NOT NULL);
 
