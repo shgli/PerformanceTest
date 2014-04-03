@@ -25,7 +25,7 @@ TimeFixture::~TimeFixture()
     mPerformance->TotalTime = elapsed.wall;
     mPerformance->UserTime = elapsed.user;
     mPerformance->SystemTime = elapsed.system;
-    mPerformance->PercentTime = 100 * (elapsed.user + elapsed.system) / elapsed.wall ;
+    mPerformance->PercentTime = 100 * (elapsed.user + elapsed.system) / (mPerformance->HardwareConcurrency * elapsed.wall) ;
 }
 
 void TimeFixture::SetAlgorithm(const std::string& algorithm)

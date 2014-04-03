@@ -17,9 +17,12 @@ Performance::Performance()
     CPUName = std::string(cpuInfos.data[0].model);
     CacheSize = cpuInfos.data[0].cache_size;
     HardwareConcurrency = boost::thread::hardware_concurrency();
-    TotalMemory = 0;
-    AvaiableMemory = 0;
     sigar_cpu_info_list_destroy(pSigar,&cpuInfos);
+
+    sigar_mem_t mem;
+    sigar_mem_get(pSigar,&mem);
+    TotalMemory = mem.total;
+    AvaiableMemory = mem.free;
     sigar_close(pSigar);
 }
 

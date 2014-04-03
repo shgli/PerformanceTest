@@ -11,6 +11,8 @@
 *.lai
 *.la
 *.a
+*.swp
+*.out
 
 build/*
 bin/*

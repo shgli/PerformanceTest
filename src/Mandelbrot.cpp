@@ -25,7 +25,7 @@ int Mandel(std::complex<double> c,int depth)
 
 static const int MAX_ROW = 100;
 static const int MAX_COL = 100;
-static const int DEPTH = 1000000;
+static const int DEPTH = 10000;
 double Scale(int i)
 {
     return 4.0 * ((double)i / MAX_ROW) - 2;
@@ -33,6 +33,7 @@ double Scale(int i)
 
 void Output(int result[MAX_ROW][MAX_COL])
 {
+    return;
     for(int iRow = 0; iRow < MAX_ROW; ++iRow)
     {
 	for(int iCol = 0; iCol < MAX_COL; ++iCol)
