@@ -11,13 +11,13 @@ int Mandel(std::complex<double> c,int depth)
     std::complex<double> z = 0;
     for(int nStep = 0; nStep < depth; ++nStep)
     {
-	if(std::abs(z) >= 2.0)
-	{
-	    break;
-	}
-	
-	z = z * z + c;
-	nCount++;
+        if(std::abs(z) >= 2.0)
+        {
+            break;
+        }
+
+        z = z * z + c;
+        nCount++;
     }
 
     return nCount;
@@ -36,76 +36,76 @@ void Output(int result[MAX_ROW][MAX_COL])
     return;
     for(int iRow = 0; iRow < MAX_ROW; ++iRow)
     {
-	for(int iCol = 0; iCol < MAX_COL; ++iCol)
-	{
-	    if(result[iRow][iCol] >= DEPTH)
-	    {
-		std::cout<<1;
-	    }
-	    else
-	    {
-		std::cout<<0;
-	    }
-	}
-	std::cout<<std::endl;
+        for(int iCol = 0; iCol < MAX_COL; ++iCol)
+        {
+            if(result[iRow][iCol] >= DEPTH)
+            {
+                std::cout<<1;
+            }
+            else
+            {
+                std::cout<<0;
+            }
+        }
+        std::cout<<std::endl;
     }
 }
 
 BOOST_FIXTURE_TEST_SUITE(Mandelbrot,TimeFixture)
-    BOOST_AUTO_TEST_CASE(serialTest)
+BOOST_AUTO_TEST_CASE(serialTest)
+{
+    SetAlgorithm("Mandelbrot");
+    SetImplementation("serial");
+    int result[MAX_ROW][MAX_COL];
+    for(int iRow = 0; iRow < MAX_ROW; ++iRow)
     {
-        SetAlgorithm("Mandelbrot");
-        SetImplementation("serial");
-	int result[MAX_ROW][MAX_COL];
-	for(int iRow = 0; iRow < MAX_ROW; ++iRow)
-	{
-	    for(int iCol = 0; iCol < MAX_COL; ++iCol)
-	    {
-		result[iRow][iCol] = Mandel(std::complex<double>(Scale(iRow),Scale(iCol)),DEPTH);
-	    }
-	}
-
-	Output(result);
-
+        for(int iCol = 0; iCol < MAX_COL; ++iCol)
+        {
+            result[iRow][iCol] = Mandel(std::complex<double>(Scale(iRow),Scale(iCol)),DEPTH);
+        }
     }
 
-   BOOST_AUTO_TEST_CASE(tbbTest)
-   {
-       SetAlgorithm("Mandelbrot");
-       SetImplementation("tbb");
+    Output(result);
 
-	int result[MAX_ROW][MAX_COL];
-	tbb::parallel_for(0,MAX_ROW
-		,[=,&result](int iRow)
-	{
-	    for(int iCol = 0; iCol < MAX_COL; ++iCol)
-	    {
-		result[iRow][iCol] = Mandel(std::complex<double>(Scale(iRow),Scale(iCol)),DEPTH);
-	    }
-	});
+}
 
-	Output(result);
-   }
+BOOST_AUTO_TEST_CASE(tbbTest)
+{
+    SetAlgorithm("Mandelbrot");
+    SetImplementation("tbb");
 
-   BOOST_AUTO_TEST_CASE(tbb_rangeTest)
-   {
-       SetAlgorithm("Mandelbrot");
-       SetImplementation("range_base_tbb");
+    int result[MAX_ROW][MAX_COL];
+    tbb::parallel_for(0,MAX_ROW
+            ,[=,&result](int iRow)
+            {
+                for(int iCol = 0; iCol < MAX_COL; ++iCol)
+                {
+                result[iRow][iCol] = Mandel(std::complex<double>(Scale(iRow),Scale(iCol)),DEPTH);
+                }
+            });
 
-	int result[MAX_ROW][MAX_COL];
-	tbb::parallel_for(tbb::blocked_range<int>(0,MAX_ROW)
-		,[=,&result](tbb::blocked_range<int> row)
-	{
-	    for(int iRow = row.begin(); iRow < row.end(); ++iRow)
-	    {
-		for(int iCol = 0; iCol < MAX_COL; ++iCol)
-		{
-		    result[iRow][iCol] = Mandel(std::complex<double>(Scale(iRow),Scale(iCol)),DEPTH);
-		}
-	    }
-	});
+    Output(result);
+}
 
-	Output(result);
+BOOST_AUTO_TEST_CASE(tbb_rangeTest)
+{
+    SetAlgorithm("Mandelbrot");
+    SetImplementation("range_base_tbb");
 
-   }
+    int result[MAX_ROW][MAX_COL];
+    tbb::parallel_for(tbb::blocked_range<int>(0,MAX_ROW)
+            ,[=,&result](tbb::blocked_range<int> row)
+            {
+                for(int iRow = row.begin(); iRow < row.end(); ++iRow)
+                {
+                    for(int iCol = 0; iCol < MAX_COL; ++iCol)
+                    {
+                        result[iRow][iCol] = Mandel(std::complex<double>(Scale(iRow),Scale(iCol)),DEPTH);
+                    }
+                }
+            });
+
+    Output(result);
+
+}
 BOOST_AUTO_TEST_SUITE_END()
